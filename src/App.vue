@@ -1,28 +1,36 @@
+<!-- 
+	This is the main page of the application, the layout component is used here,
+	and the router-view is passed to it.
+	Layout component is dynamically declared based on the layout for each route,
+	specified in routes list router/index.js .
+ -->
+
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import setupLocatorUI from "@locator/runtime";
+setupLocatorUI({
+  adapter: "vue"
+});
+export default ({
+  computed: {
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    // Sets components name based on current route's specified layout, defaults to
+    // <layout-default></layout-default> component.
+    layout() {
+      return "layout-" + (this.$route.meta.layout || "default").toLowerCase();
+    }
+  },
+})
+
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style lang="scss"></style>
